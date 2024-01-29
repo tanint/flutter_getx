@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx/controllers/counter_controller.dart';
 import 'package:flutter_getx/pages/about_page.dart';
+import 'package:flutter_getx/widgets/todo_input.dart';
+import 'package:flutter_getx/widgets/todo_list.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
@@ -29,12 +32,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class CounterController extends GetxController {
-  var count = 0.obs;
-
-  increment() => count++;
-}
-
 class Home extends StatelessWidget {
   const Home({super.key});
 
@@ -52,33 +49,32 @@ class Home extends StatelessWidget {
         child: Column(
           children: [
             Expanded(
-                child: Column(
-              children: [
-                Obx(
-                  () => Text("Hello world ${counter.count}"),
-                ),
-                Row(
-                  children: [
-                    FilledButton(
-                      onPressed: () => counter.increment(),
-                      child: const Text("Increase"),
-                    ),
-                    FilledButton(
-                      onPressed: () => counter.increment(),
-                      child: const Text("Increase"),
-                    ),
-                    FilledButton(
-                      onPressed: () => Get.toNamed("/about"),
-                      child: const Text("Go to about"),
-                    )
-                  ],
-                ),
-              ],
-            )),
-            FilledButton(
-              onPressed: () => counter.increment(),
-              child: const Text("Increase"),
-            )
+              child: Column(
+                children: [
+                  Obx(
+                    () => Text("Hello world ${counter.count}"),
+                  ),
+                  Row(
+                    children: [
+                      FilledButton(
+                        onPressed: () => counter.increment(),
+                        child: const Text("Increase"),
+                      ),
+                      OutlinedButton(
+                        onPressed: () => counter.increment(),
+                        child: const Text("Increase"),
+                      ),
+                      FilledButton.tonal(
+                        onPressed: () => Get.toNamed("/about"),
+                        child: const Text("Go to about"),
+                      ),
+                    ],
+                  ),
+                  const Expanded(child: TodoList()),
+                ],
+              ),
+            ),
+            const TodoInput()
           ],
         ),
       ),
