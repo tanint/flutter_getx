@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_getx/pages/about_page.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
@@ -19,20 +20,27 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Home(),
+      initialRoute: '/',
+      getPages: [
+        GetPage(name: '/', page: () => const Home()),
+        GetPage(name: '/about', page: () => const AboutPage())
+      ],
     );
   }
 }
 
-class Controller extends GetxController {
+class CounterController extends GetxController {
   var count = 0.obs;
+
   increment() => count++;
 }
 
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final Controller c = Get.put(Controller());
+    final CounterController counter = Get.put(CounterController());
 
     return Scaffold(
       appBar: AppBar(
@@ -43,9 +51,34 @@ class Home extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Obx(() => Text("Hello world ${c.count}")),
+            Expanded(
+                child: Column(
+              children: [
+                Obx(
+                  () => Text("Hello world ${counter.count}"),
+                ),
+                Row(
+                  children: [
+                    FilledButton(
+                      onPressed: () => counter.increment(),
+                      child: const Text("Increase"),
+                    ),
+                    FilledButton(
+                      onPressed: () => counter.increment(),
+                      child: const Text("Increase"),
+                    ),
+                    FilledButton(
+                      onPressed: () => Get.toNamed("/about"),
+                      child: const Text("Go to about"),
+                    )
+                  ],
+                ),
+              ],
+            )),
             FilledButton(
-                onPressed: () => c.increment(), child: const Text("Increase"))
+              onPressed: () => counter.increment(),
+              child: const Text("Increase"),
+            )
           ],
         ),
       ),
